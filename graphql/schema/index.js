@@ -12,7 +12,11 @@ type Skill {
     name: String!
 }
 type Skills {
-    skill: Skill!,
+    skill: Skill!
+    level: Int!
+}
+type DiffSkills {
+    name: String!
     level: Int!
 }
 type User {
@@ -21,6 +25,14 @@ type User {
     lastName: String!
     password: String
     email: String
+}
+type UserWithSkills {
+    _id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    skills: [Skills]
+
 }
 type Auth {
     userId: ID!,
@@ -41,6 +53,7 @@ type RootQuery {
     skills: [Skill!]! 
     userSkills: [UserSkill!]!
     login(email: String!, password: String!): Auth!
+    users: [UserWithSkills!]!
 }
 type RootMutation {
     CreateSkill(skillInput: SkillInput): Skill

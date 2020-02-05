@@ -10,14 +10,14 @@ const user = async userId => {
 }
 
 const singleSkill = async skillId => {
- try {
-     const skill = await Skill.findById(skillId);
-     return {...skill._doc, _id: skill.id}
-
- }catch (err) {
-     throw err
- }
-}
+    try {
+        const skill = await Skill.findById(skillId);
+        return {...skill._doc, _id: skill.id}
+   
+    }catch (err) {
+        throw err
+    }
+   }
 
 
 module.exports = {
@@ -49,4 +49,17 @@ module.exports = {
         const result = await userSkill.save();
         return {...result._doc, _id: result.id}
     },
+    users: async (args, req) => {
+        if(!req.isAuth) {
+           throw new Error("unauthorized")
+        }
+        const users = await User.find();
+        return users.map(user => {
+           const skills =  user.skills.map(skill => {
+                // const skillTransformed = singleSkill.bind(this, skill._doc.skill);
+                return { skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level} 
+            })
+            return {...user._doc, _id: user.id, skills: skills}
+        })
+    }
   }
