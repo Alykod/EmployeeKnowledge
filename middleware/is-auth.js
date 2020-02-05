@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
   }
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, "AgilethoughtToken20@0!!");
+    decodedToken = jwt.verify(token, "Test1234@0!!");
   } catch (err) {
     req.isAuth = false;
     return next();
