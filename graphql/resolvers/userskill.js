@@ -61,5 +61,20 @@ module.exports = {
             })
             return {...user._doc, _id: user.id, skills: skills}
         })
+    },
+    userById: async(args, res, req) => {
+        // if(!req.isAuth) {
+        //     throw new Error("unauthorized") 
+        // }
+        const user = await User.findById(args.userId);
+        if(user.skills.length > 0) {
+            const userSkills = user.skills.map(skill => {
+                return {skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level}
+            }) 
+            return {...user._doc, _id: user.id, skills: userSkills}
+        } else {
+           return {...user._doc, _id: user.id, skills: []}
+        }
+       
     }
   }

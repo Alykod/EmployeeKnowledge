@@ -54,6 +54,7 @@ type RootQuery {
     userSkills: [UserSkill!]!
     login(email: String!, password: String!): Auth!
     users: [UserWithSkills!]!
+    userById(userId: String!): UserWithSkills!
 }
 type RootMutation {
     CreateSkill(skillInput: SkillInput): Skill
