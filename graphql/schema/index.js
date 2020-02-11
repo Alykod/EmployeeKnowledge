@@ -59,7 +59,7 @@ type RootQuery {
 type RootMutation {
     CreateSkill(skillInput: SkillInput): Skill
     CreateUser(userInput: UserInput) : User
-    CreateUserSkill(skillName: String!, userId: ID!, level: Int!) : UserSkill
+    CreateUserSkill(skillName: String!, userId: ID!, level: Int!) : Skill
 }
 schema {
     query: RootQuery

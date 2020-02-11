@@ -38,16 +38,24 @@ module.exports = {
         if(!req.isAuth) {
             throw new Error("unauthorized")
         }
-        const skill = await Skill.findOne({name: args.skillName});
+        let skill = await Skill.findOne({name: args.skillName});
+        if(!skill) {
+            const newSkill = new Skill({
+                name: args.skillName
+            })
+            newSkill.save();
+            skill = newSkill;
+        }
         const user = await User.findOne({_id: args.userId});
-        const userSkill = new UserSkill({
-           skill: skill,
-           user:  user,
-           level: args.level
-        })
-
-        const result = await userSkill.save();
-        return {...result._doc, _id: result.id}
+            const newUserSkill = {
+                level: args.level,
+                skill: skill
+            }
+            user.skills.push(newUserSkill);
+            const saveUSer = await user.save();
+            console.log(saveUSer)
+        // }
+        return {...skill._doc, _id: skill.id}
     },
     users: async (args, req) => {
         if(!req.isAuth) {

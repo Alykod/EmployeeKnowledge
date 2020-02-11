@@ -13,7 +13,8 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
@@ -23,7 +24,8 @@ const UserSchema = new Schema({
     {
       skill: {
         type: Schema.Types.ObjectId,
-        ref: "Skill"
+        ref: "Skill",
+        unique: true
       },
       level: {
         type: Number
