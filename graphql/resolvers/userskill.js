@@ -1,6 +1,6 @@
 const Skill = require("../../models/skill");
 const User = require("../../models/user");
-const UserSkill = require("../../models/userSkills");
+const Role = require("../../models/role");
 
 const user = async userId => {
     return User.findById(userId).then(user => {
@@ -19,21 +19,17 @@ const singleSkill = async skillId => {
     }
    }
 
+const userRole = async roleId => {
+    try {
+        const role = await Role.findById(roleId)
+        return {...role._doc, _id: role.id}
+    } catch (err) {
+        throw err
+    }
+}
+
 
 module.exports = {
-    userSkills: async(req, res , next) => {
-        if(!res.isAuth) {
-            throw new Error("unauthorized")
-        }
-        try {
-           const userSkills =  await UserSkill.find();
-            return userSkills.map(userSkill => {
-                return {...userSkill._doc, _id: userSkill.id, user: user.bind(this, userSkill._doc.user), skill: singleSkill.bind(this, userSkill._doc.skill)}
-            })
-        }catch (err){
-            throw err
-        }
-    },
     CreateUserSkill: async (args, req) => {
         if(!req.isAuth) {
             throw new Error("unauthorized")
@@ -49,7 +45,8 @@ module.exports = {
         const user = await User.findOne({_id: args.userId});
             const newUserSkill = {
                 level: args.level,
-                skill: skill
+                skill: skill,
+                interest: args.interest
             }
             user.skills.push(newUserSkill);
             const saveUSer = await user.save();
@@ -61,27 +58,27 @@ module.exports = {
         if(!req.isAuth) {
            throw new Error("unauthorized")
         }
-        const users = await User.find();
+        const users = await User.find({"active": true});
         return users.map(user => {
            const skills =  user.skills.map(skill => {
                 // const skillTransformed = singleSkill.bind(this, skill._doc.skill);
-                return { skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level} 
+                return { skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level,  interest: skill._doc.interest} 
             })
-            return {...user._doc, _id: user.id, skills: skills}
+            return {...user._doc, _id: user.id, skills: skills, role: userRole.bind(this, user._doc.role)}
         })
     },
     userById: async(args, res, req) => {
-        // if(!req.isAuth) {
-        //     throw new Error("unauthorized") 
-        // }
+        if(!res.isAuth) {
+            throw new Error("unauthorized") 
+        }
         const user = await User.findById(args.userId);
         if(user.skills.length > 0) {
             const userSkills = user.skills.map(skill => {
-                return {skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level}
+                return {skill: singleSkill.bind(this, skill._doc.skill), level: skill._doc.level, interest: skill._doc.interest}
             }) 
-            return {...user._doc, _id: user.id, skills: userSkills}
+            return {...user._doc, _id: user.id, skills: userSkills, role: userRole.bind(this, user._doc.role)}
         } else {
-           return {...user._doc, _id: user.id, skills: []}
+           return {...user._doc, _id: user.id, skills: [], role: userRole.bind(this, user._doc.role)}
         }
        
     }

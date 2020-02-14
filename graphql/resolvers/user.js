@@ -1,6 +1,7 @@
 const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const Role = require("../../models/role")
 
 
 
@@ -12,15 +13,32 @@ module.exports = {
         }
         return bcrypt
           .hash(args.userInput.password, 12)
-          .then(hashedPass => {
+          .then(async(hashedPass) => {
+            let role = await Role.findOne({name: "dev"})
+            if(!role) {
+              role =   new Role({
+                name: "dev"
+              })
+              role.save();
+            }
+            
             const user = new User({
               email: args.userInput.email,
               password: hashedPass,
               firstName: args.userInput.firstName,
-              lastName: args.userInput.lastName
+              lastName: args.userInput.lastName,
+              fullTimeEmployee: args.userInput.fullTimeEmployee,
+              country: args.userInput.country,
+              state: args.userInput.state,
+              city: args.userInput.city,
+              role: role,
+              skills: []
             });
             return user.save().then(result => {
-              return { ...result._doc, password: null, _id: result.id };
+              const token = jwt.sign({userId: user.id, email: user.email}, "Test1234@0!!", {
+                expiresIn : "1h"
+            });
+              return { tokenExpiration: 1, token, userId: result.id };
             });
           })
           .catch(err => {
