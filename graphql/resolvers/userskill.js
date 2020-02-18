@@ -54,6 +54,16 @@ module.exports = {
         // }
         return {...skill._doc, _id: skill.id}
     },
+    ChangeUserAvailability: async (args, req) => {
+        if(!req.isAuth) {
+            throw new Error("unauthorized");
+        }
+        let user = await User.findOne({_id: args.userId});
+        user.available = args.available;
+        const saveUser = await user.save();
+
+        return {...user._doc, _id: user.id}
+    },
     users: async (args, req) => {
         if(!req.isAuth) {
            throw new Error("unauthorized")

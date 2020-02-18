@@ -98,6 +98,7 @@ type RootMutation {
     CreateSkill(skillInput: SkillInput): Skill
     CreateUser(userInput: UserInput) : Auth!
     CreateUserSkill(skillName: String!, userId: ID!, level: Int!, interest: Int!) : Skill
+    ChangeUserAvailability(userId: ID!, available: Boolean!): User
 }
 schema {
     query: RootQuery
