@@ -4,6 +4,15 @@ const jwt = require('jsonwebtoken');
 const Role = require("../../models/role")
 
 
+const userRole = async roleId => {
+  try {
+      const role = await Role.findById(roleId)
+      return {...role._doc, _id: role.id}
+  } catch (err) {
+      throw err
+  }
+}
+
 
 module.exports = {
     CreateUser: args => {
@@ -14,10 +23,10 @@ module.exports = {
         return bcrypt
           .hash(args.userInput.password, 12)
           .then(async(hashedPass) => {
-            let role = await Role.findOne({name: "dev"})
+            let role = await Role.findOne({name: "unassigned"})
             if(!role) {
               role =   new Role({
-                name: "dev"
+                name: "unassigned"
               })
               role.save();
             }
@@ -35,7 +44,7 @@ module.exports = {
               skills: []
             });
             return user.save().then(result => {
-              const token = jwt.sign({userId: user.id, email: user.email}, "Test1234@0!!", {
+              const token = jwt.sign({userId: user.id, email: user.email, role: user.role.name}, "Test1234@0!!", {
                 expiresIn : "1h"
             });
               return { tokenExpiration: 1, token, userId: result.id };
@@ -55,7 +64,8 @@ module.exports = {
         if(!passwordCompare) {
             throw new Error("Incorrect Password");
         }
-        const token = jwt.sign({userId: user.id, email: user.email}, "Test1234@0!!", {
+        let role = await userRole(user.role)
+        const token = await jwt.sign({userId: user.id, email: user.email, role: role.name}, "Test1234@0!!", {
             expiresIn : "1h"
         });
         return  { userId: user.id, token, tokenExpiration: 1}

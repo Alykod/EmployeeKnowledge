@@ -38,7 +38,7 @@ const UserSchema = new Schema({
   role: {
     type: Schema.Types.ObjectId,
     ref: "Role",
-    required: true,
+    // required: true,
   },
   available: {
     type: Boolean,

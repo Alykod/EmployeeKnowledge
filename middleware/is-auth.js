@@ -24,6 +24,7 @@ module.exports = (req, res, next) => {
     req.isAuth = false;
     return next();
   }
+  req.role = decodedToken.role
   req.isAuth = true,
   req.userId = decodedToken.userId;
   next();

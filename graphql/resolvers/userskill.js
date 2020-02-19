@@ -55,11 +55,24 @@ module.exports = {
         return {...skill._doc, _id: skill.id}
     },
     ChangeUserAvailability: async (args, req) => {
-        if(!req.isAuth) {
+        if(!req.isAuth || req.role !== "Admin") {
             throw new Error("unauthorized");
         }
         let user = await User.findOne({_id: args.userId});
-        user.available = args.available;
+        // let available = args.available
+        if(typeof args.available === "boolean") {
+            user.available = args.available;
+        }
+        if(typeof args.active === "boolean") {
+            user.active = args.active;
+        }
+        if(args.role) {
+            let roleValues = Role.find({name: args.role});
+            if(!roleValues) {
+                throw new Error("Role Does not Exist")
+            }
+            user.role = roleValues;
+        }
         const saveUser = await user.save();
 
         return {...user._doc, _id: user.id}
