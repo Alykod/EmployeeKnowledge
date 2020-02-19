@@ -80,6 +80,7 @@ input UserInput {
     state: String!
     city: String!
     fullTimeEmployee: Boolean!
+    role: String!
 
 }
 input SkillInput {

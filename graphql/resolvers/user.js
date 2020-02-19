@@ -23,7 +23,8 @@ module.exports = {
         return bcrypt
           .hash(args.userInput.password, 12)
           .then(async(hashedPass) => {
-            let role = await Role.findOne({name: "unassigned"})
+            let role = await Role.findOne({name: args.userInput.role})
+            // let role = await Role.findOne({name: "unassigned"})
             if(!role) {
               role =   new Role({
                 name: "unassigned"
