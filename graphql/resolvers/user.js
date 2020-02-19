@@ -16,7 +16,7 @@ const userRole = async roleId => {
 
 module.exports = {
     CreateUser: args => {
-      return User.findOne({ email: args.userInput.email }).then(user => {
+      return User.findOne({ email: args.userInput.email.toLowerCase() }).then(user => {
         if (user) {
           throw new Error("User Already Exists");
         }
@@ -32,14 +32,14 @@ module.exports = {
             }
             
             const user = new User({
-              email: args.userInput.email,
+              email: args.userInput.email.toLowerCase(),
               password: hashedPass,
-              firstName: args.userInput.firstName,
-              lastName: args.userInput.lastName,
+              firstName: args.userInput.firstName.toLowerCase(),
+              lastName: args.userInput.lastName.toLowerCase(),
               fullTimeEmployee: args.userInput.fullTimeEmployee,
-              country: args.userInput.country,
-              state: args.userInput.state,
-              city: args.userInput.city,
+              country: args.userInput.country.toLowerCase(),
+              state: args.userInput.state.toLowerCase(),
+              city: args.userInput.city.toLowerCase(),
               role: role,
               skills: []
             });
@@ -56,7 +56,7 @@ module.exports = {
       });
     },
     login: async ({email, password}) => {
-        const user = await User.findOne({email});
+        const user = await User.findOne({email: email.toLowerCase()});
         if(!user) {
             throw new Error("User Doesn't exist")
         }

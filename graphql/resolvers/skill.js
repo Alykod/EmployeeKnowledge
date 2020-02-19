@@ -1,26 +1,27 @@
 const Skill = require("../../models/skill");
 const User = require("../../models/user");
-
+const Role = require("../../models/role")
 
    module.exports = {
     skills: async () => {
       return await Skill.find();
     },
     roles: async() => {
-      let users = await User.find();
-      let roles = [];
-      users.forEach(user => {
-        !roles.includes(user.role) && roles.push(user.role)
-      })
-      return roles
+      return await Role.find();
+      // let users = await User.find();
+      // let roles = [];
+      // users.forEach(user => {
+      //   !roles.includes(user.role) && roles.push(user.role)
+      // })
+      // return roles
     },
     locations: async () => {
       let users = await User.find();
       let locations = {cities: [], countries: [], states: []};
       users.forEach(user => {
-        !locations.cities.includes(user.city) && locations.cities.push(user.city);
-        !locations.countries.includes(user.country) && locations.countries.push(user.country);
-        !locations.states.includes(user.state) && locations.states.push(user.state);
+        !locations.cities.includes(user.city.toLowerCase()) && locations.cities.push(user.city.toLowerCase());
+        !locations.countries.includes(user.country.toLowerCase()) && locations.countries.push(user.country.toLowerCase());
+        !locations.states.includes(user.state.toLowerCase()) && locations.states.push(user.state.toLowerCase());
       })
       return locations
     },
@@ -28,10 +29,10 @@ const User = require("../../models/user");
         if(!req.isAuth) {
             throw new Error("unauthorized")
         }
-      let skill = Skill.find({name: args.skillInput.name});
+      let skill = Skill.find({name: args.skillInput.name.toLowerCase()});
       if(!skill){
         skill = new Skill({
-          name: args.skillInput.name
+          name: args.skillInput.name.toLowerCase()
         });
         skill.save();
       }

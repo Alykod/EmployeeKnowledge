@@ -89,7 +89,7 @@ input SkillInput {
 type RootQuery {
     skills: [Skill!]!
     locations: Locations! 
-    roles: Roles!
+    roles: [Role!]!
     login(email: String!, password: String!): Auth!
     users: [UserWithSkills!]!
     userById(userId: String!): UserWithSkills!

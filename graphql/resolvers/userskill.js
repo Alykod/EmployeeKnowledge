@@ -34,10 +34,10 @@ module.exports = {
         if(!req.isAuth) {
             throw new Error("unauthorized")
         }
-        let skill = await Skill.findOne({name: args.skillName});
+        let skill = await Skill.findOne({name: args.skillName.toLowerCase()});
         if(!skill) {
             const newSkill = new Skill({
-                name: args.skillName
+                name: args.skillName.toLowerCase()
             })
             newSkill.save();
             skill = newSkill;
@@ -55,9 +55,9 @@ module.exports = {
         return {...skill._doc, _id: skill.id}
     },
     ChangeUserAvailability: async (args, req) => {
-        if(!req.isAuth || req.role !== "Admin") {
-            throw new Error("unauthorized");
-        }
+        // if(!req.isAuth || req.role !== "Admin") {
+        //     throw new Error("unauthorized");
+        // }
         let user = await User.findOne({_id: args.userId});
         // let available = args.available
         if(typeof args.available === "boolean") {
@@ -67,7 +67,7 @@ module.exports = {
             user.active = args.active;
         }
         if(args.role) {
-            let roleValues = Role.find({name: args.role});
+            let roleValues = await Role.findOne({name: args.role.toLowerCase()});
             if(!roleValues) {
                 throw new Error("Role Does not Exist")
             }
