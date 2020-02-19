@@ -4,9 +4,12 @@ const graphqlHttp = require("express-graphql");
 const connectDB = require("./config/db");
 const rootValue = require('./graphql/resolvers')
 const schema = require('./graphql/schema')
-const app = express();
 const isAuth = require('./middleware/is-auth')
-connectDB();
+const dotnet = require('dotenv')
+
+const app = express();
+require('dotenv').config();
+connectDB(process.env.MONGODB);
 app.use(bodyParser.json());
 app.use(isAuth);
 app.use(

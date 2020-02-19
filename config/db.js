@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 
-
-const connectDB = async() => {
+const connectDB = async(dbValue) => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/graphqlSkills', {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false});
+        const userName = "employeesTester";
+        const Pass = "tester@123!"
+        await mongoose.connect(dbValue, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false});
 
     } catch (err) {
         console.error(err.message);
