@@ -45,7 +45,7 @@ module.exports = {
               skills: []
             });
             return user.save().then(result => {
-              const token = jwt.sign({userId: user.id, email: user.email, role: user.role.name}, "Test1234@0!!", {
+              const token = jwt.sign({userId: user.id, email: user.email, role: user.role.name}, process.env.TOKENSTRING, {
                 expiresIn : "1h"
             });
               return { tokenExpiration: 1, token, userId: result.id };
@@ -66,7 +66,7 @@ module.exports = {
             throw new Error("Incorrect Password");
         }
         let role = await userRole(user.role)
-        const token = await jwt.sign({userId: user.id, email: user.email, role: role.name}, "Test1234@0!!", {
+        const token = await jwt.sign({userId: user.id, email: user.email, role: role.name}, process.env.TOKENSTRING, {
             expiresIn : "1h"
         });
         return  { userId: user.id, token, tokenExpiration: 1}
