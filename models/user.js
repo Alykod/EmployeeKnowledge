@@ -30,11 +30,11 @@ const UserSchema = new Schema({
     required: true,
     default: "FL"
   },
-  country: {
-    type: String,
-    required: true,
-    default: "United States"
-  },
+  // country: {
+  //   type: String,
+  //   required: true,
+  //   default: "United States"
+  // },
   role: {
     type: Schema.Types.ObjectId,
     ref: "Role",

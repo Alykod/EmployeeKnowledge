@@ -6,10 +6,13 @@ const rootValue = require('./graphql/resolvers')
 const schema = require('./graphql/schema')
 const isAuth = require('./middleware/is-auth')
 const dotnet = require('dotenv')
+const cors = require('cors');
+
 
 const app = express();
 require('dotenv').config();
 connectDB(process.env.MONGODB);
+app.use(cors());
 app.use(bodyParser.json());
 app.use(isAuth);
 app.use(

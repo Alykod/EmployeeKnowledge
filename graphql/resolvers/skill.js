@@ -17,10 +17,10 @@ const Role = require("../../models/role")
     },
     locations: async () => {
       let users = await User.find();
-      let locations = {cities: [], countries: [], states: []};
+      let locations = {cities: [], states: []};
       users.forEach(user => {
         !locations.cities.includes(user.city.toLowerCase()) && locations.cities.push(user.city.toLowerCase());
-        !locations.countries.includes(user.country.toLowerCase()) && locations.countries.push(user.country.toLowerCase());
+        // !locations.countries.includes(user.country.toLowerCase()) && locations.countries.push(user.country.toLowerCase());
         !locations.states.includes(user.state.toLowerCase()) && locations.states.push(user.state.toLowerCase());
       })
       return locations

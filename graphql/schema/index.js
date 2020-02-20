@@ -16,7 +16,6 @@ type NewUser {
     email: String
     city: String
     state: String
-    country: String
     available: Boolean
     role: String
 }
@@ -36,7 +35,6 @@ type Skills {
 type Locations {
     cities: [String!]!
     states: [String!]!
-    countries: [String!]!
 }
 type Roles {
     role: [Role!]!
@@ -61,7 +59,6 @@ type UserWithSkills {
     skills: [Skills]
     city: String
     state: String
-    country: String
     available: Boolean
     fullTimeEmployee: Boolean
     role: Role
@@ -76,7 +73,6 @@ input UserInput {
     password: String!
     firstName: String!
     lastName: String!
-    country: String!
     state: String!
     city: String!
     fullTimeEmployee: Boolean!

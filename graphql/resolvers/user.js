@@ -38,7 +38,7 @@ module.exports = {
               firstName: args.userInput.firstName.toLowerCase(),
               lastName: args.userInput.lastName.toLowerCase(),
               fullTimeEmployee: args.userInput.fullTimeEmployee,
-              country: args.userInput.country.toLowerCase(),
+              // country: args.userInput.country.toLowerCase(),
               state: args.userInput.state.toLowerCase(),
               city: args.userInput.city.toLowerCase(),
               role: role,
