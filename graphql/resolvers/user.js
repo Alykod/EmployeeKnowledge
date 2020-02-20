@@ -27,7 +27,7 @@ module.exports = {
             // let role = await Role.findOne({name: "unassigned"})
             if(!role) {
               role =   new Role({
-                name: "unassigned"
+                name: args.userInput.role
               })
               role.save();
             }
