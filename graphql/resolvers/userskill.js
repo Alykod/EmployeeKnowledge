@@ -69,7 +69,12 @@ module.exports = {
         if(args.role) {
             let roleValues = await Role.findOne({name: args.role.toLowerCase()});
             if(!roleValues) {
-                throw new Error("Role Does not Exist")
+                let newRole = new Role({
+                    name: args.role
+                  });
+                  await newRole.save();
+                  roleValues = newRole;
+                // throw new Error("Role Does not Exist")
             }
             user.role = roleValues;
         }
