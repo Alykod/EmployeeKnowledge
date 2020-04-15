@@ -12,7 +12,11 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 connectDB(process.env.MONGODB);
-app.use(cors());
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(isAuth);
 app.use(
